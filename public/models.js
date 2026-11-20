@@ -1,0 +1,44 @@
+// Oyunun gece temasına özel, kodla çizilmiş ayrıntılı perspektif yapı modelleri.
+export const modelDefs=`<defs>
+ <linearGradient id="wall-front" x2=".9" y2="1"><stop stop-color="#fff0c9"/><stop offset="1" stop-color="#bc9870"/></linearGradient>
+ <linearGradient id="wall-side" x2="1" y2="0"><stop stop-color="#c8a77b"/><stop offset="1" stop-color="#77674e"/></linearGradient>
+ <linearGradient id="glass-front" x2="1" y2=".4"><stop stop-color="#6296a8"/><stop offset=".42" stop-color="#244d69"/><stop offset=".8" stop-color="#557e8a"/><stop offset="1" stop-color="#102e49"/></linearGradient>
+ <linearGradient id="glass-side" x2="1" y2="1"><stop stop-color="#2c5b77"/><stop offset="1" stop-color="#10243b"/></linearGradient>
+ <linearGradient id="roof-red" x2="0" y2="1"><stop stop-color="#dc8c61"/><stop offset="1" stop-color="#873b31"/></linearGradient>
+ <radialGradient id="window-light"><stop stop-color="#fff9c6"/><stop offset="1" stop-color="#e1aa54"/></radialGradient>
+ <linearGradient id="silo" x2="1" y2="0"><stop stop-color="#556e77"/><stop offset=".45" stop-color="#c0c6b2"/><stop offset="1" stop-color="#465e67"/></linearGradient>
+</defs>`;
+const window=(x,y,w=8,h=10)=>`<g><rect x="${x-1}" y="${y-1}" width="${w+2}" height="${h+2}" rx="1" fill="#6e6652"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#window-light)"/><path d="M${x+w/2} ${y}v${h}m${-w/2} ${-h/2}h${w}" stroke="#896b43" stroke-width=".8"/></g>`;
+const tree=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0V-18" stroke="#715839" stroke-width="3"/><ellipse cy="-18" rx="8" ry="11" fill="#356541"/><ellipse cx="-3" cy="-23" rx="5" ry="8" fill="#729255"/><circle cx="4" cy="-19" r="4" fill="#537a46"/></g>`;
+function home(level){const h=level===1?31:20+level*13,w=46;let out=`<ellipse cx="3" cy="7" rx="41" ry="12" fill="#07141d77"/><path d="M-30 5 20 11 39 1-10-6Z" fill="#b7aa84"/><path d="M-24 0V${-h}H22V3Z" fill="url(#wall-front)" stroke="#8c7859"/><path d="M22 3 38-6V${-h-9}L22 ${-h}Z" fill="url(#wall-side)" stroke="#73644b"/>`;
+ if(level===1){out+=`<path d="M-31 ${-h} -3 ${-h-24} 27 ${-h}Z" fill="url(#roof-red)" stroke="#6e3e2c"/><path d="M-3 ${-h-24} 13 ${-h-33} 44 ${-h-9} 27 ${-h}Z" fill="#a9563e" stroke="#663b2b"/><path d="M-31 ${-h}H27M-23 ${-h-5}H21M-16 ${-h-11}H13" stroke="#e5aa6a" stroke-width="1" opacity=".7"/><path d="M9 ${-h-27}v-14h7v19" fill="#ba815d" stroke="#6c4b38"/>`;
+  out+=window(-18,-24,10,12)+window(7,-24,10,12)+`<path d="M-4 2v-22q5-4 10 0V3" fill="#5d4430" stroke="#dec48e"/><circle cx="3" cy="-7" r="1" fill="#f9e39b"/><path d="M-7 5H10" stroke="#cbb78f" stroke-width="4"/><path d="M-19 -8h11m14 0h14" stroke="#5d7a4a" stroke-width="4"/><g fill="#e3a358"><circle cx="-16" cy="-11" r="2"/><circle cx="-11" cy="-10" r="2"/><circle cx="10" cy="-11" r="2"/></g>`;
+ }else{
+  out+=`<path d="M-28 ${-h} 22 ${-h+1} 42 ${-h-10} -7 ${-h-11}Z" fill="#cc885d" stroke="#855335"/><path d="M-24 ${-h-1} 22 ${-h-1} 35 ${-h-9} -10 ${-h-9}Z" fill="#a1513d"/>`;
+  for(let floor=0;floor<level;floor++){const y=-h+8+floor*13;out+=window(-18,y,8,8)+window(-3,y,8,8)+window(11,y,7,8)+`<path d="M-23 ${y+10}H23M23 ${y+10}l14-8" stroke="#d9c294" stroke-width="2"/><path d="M-23 ${y+7}H23m-42 0v4m13-4v4m13-4v4m13-4v4" stroke="#5d6261" stroke-width="1"/><path d="M28 ${y-2}l5-3v7l-5 3z" fill="#dfba73"/>`;}
+  out+=`<path d="M-4 3v-13H5V4" fill="#444f4f" stroke="#dbc288"/><path d="M-9 6H10" stroke="#b5a582" stroke-width="4"/>`;
+ }
+ out+=tree(-34,3,.65)+tree(39,5,.6)+`<path d="M-29 8q30 8 59 0" stroke="#647447" stroke-width="4"/><g fill="#e0b46f"><circle cx="-20" cy="7" r="1.6"/><circle cx="17" cy="10" r="1.5"/></g>`;
+ return out;
+}
+function plaza(){let out=`<ellipse cx="6" cy="8" rx="47" ry="13" fill="#06111d88"/><path d="M-34 5 16 13 45-2-7-11Z" fill="#a6aca2" stroke="#6e786f"/><path d="M-24 0V-108H22V4Z" fill="url(#glass-front)" stroke="#adbcaf" stroke-width="1.5"/><path d="M22 4 41-8V-119L22-108Z" fill="url(#glass-side)" stroke="#738d91"/><path d="M-24-108 22-108 41-119-5-120Z" fill="#bfd0c3" stroke="#c9c7a3"/><path d="M-17-109v-9H13v10" fill="#477187" stroke="#a4b8ae"/><path d="M-10-118v-7h13v7M2-125v-15" stroke="#c2bd91" stroke-width="2"/><circle cx="2" cy="-141" r="2" fill="#ffbc6d" class="beacon"/>`;
+ for(let floor=0;floor<8;floor++){const y=-99+floor*12;out+=`<path d="M-24 ${y}H22l19-11" fill="none" stroke="#afc1b1" stroke-width="1.4"/>`;for(let col=0;col<4;col++){const x=-19+col*10;out+=`<rect x="${x}" y="${y+3}" width="6" height="6" fill="${(floor+col)%4===0?'#ffe4a0':'#83a9ac'}" opacity="${(floor+col)%4===0?.9:.45}"/>`;}}
+ out+=`<path d="M-11-106V0M3-107V2M16-107V3" stroke="#b7c8bc" stroke-width="1" opacity=".55"/><path d="M-22-104-12-104 17-4H5Z" fill="#d0f4ed" opacity=".14"/><path d="M-10 3v-15H8V5" fill="#c9e2d1" stroke="#e5d7a2"/><path d="M-1-12V5M-13-3H12" stroke="#557c89"/><path d="M-21-18H19" stroke="#e1b86d" stroke-width="3"/><text x="-1" y="-21" text-anchor="middle" font-size="6" letter-spacing="1" fill="#f9df99">EMLAK</text>`+tree(-34,3,.75)+tree(43,-3,.7);
+ return out;
+}
+const cow=(x,y,s=1)=>`<g class="animal" transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="-6" rx="10" ry="6" fill="#f4e8cb" stroke="#a39576"/><path d="M-6-1v7m10-7v7" stroke="#e0caa5" stroke-width="3"/><ellipse cx="8" cy="-8" rx="5" ry="5" fill="#eee0bd"/><path d="M-5-10q7-4 7 4t-7 0" fill="#54483b"/><ellipse cx="11" cy="-5" rx="4" ry="2" fill="#bb8c76"/><circle cx="10" cy="-10" r="1" fill="#1a2328"/><path d="M6-12l-2-3m8 3 2-3M-9-8l-4 5" stroke="#8e7b59" stroke-width="1.5"/></g>`;
+const hen=(x,y)=>`<g class="animal" transform="translate(${x} ${y})"><ellipse cy="-2" rx="4" ry="3" fill="#f8e8bf"/><circle cx="3" cy="-5" r="2" fill="#fff0cb"/><path d="M3-7v-2M-1 1v3m3-3v3" stroke="#ce8d4f"/><path d="M5-5h3l-3 2" fill="#d9ac47"/></g>`;
+function farm(level){let out=`<ellipse cx="1" cy="11" rx="59" ry="18" fill="#07141d77"/><path d="M-53 0 11 17 58-5-7-20Z" fill="#817650" stroke="#b7a16d"/><path d="M-47 4 13 19 57-2 57 4 14 26-47 11Z" fill="#5b6240"/>`;
+ for(let i=0;i<4;i++)out+=`<path d="M${-14+i*9} ${3+i*2}l30-15" stroke="${i%2?'#c1ad60':'#69804a'}" stroke-width="5"/><path d="M${-14+i*9} ${3+i*2}l30-15" stroke="#dfc96f" stroke-width="1" stroke-dasharray="2 3"/>`;
+ out+=`<path d="M-35-1V-33H1V8Z" fill="#a7533c" stroke="#e0ab77"/><path d="M1 8 19-3V-43L1-33Z" fill="#773c32" stroke="#b88d5f"/><path d="M-42-33-18-54 8-33Z" fill="#bc6845" stroke="#6e3f30"/><path d="M-18-54 0-64 26-43 8-33Z" fill="#793d33" stroke="#c08a55"/><path d="M-40-33H8M-33-39H1M-28-44h22" stroke="#d4945f"/><path d="M-29-1v-23H-7V4Z" fill="#694333" stroke="#e9d3a4" stroke-width="2"/><path d="M-28-23-8 2M-8-23-28-1M-18-23V2" stroke="#f0d8aa" stroke-width="1.6"/><path d="M-34-29H0m-34 8h5m25 0h5" stroke="#ce8259" stroke-width="1"/><ellipse cx="-41" cy="4" rx="7" ry="4" fill="#dbb959"/><path d="M-47-2v6m3-8v10m3-10v10m3-8v8" stroke="#e5ca75"/>`;
+ out+=hen(-12,17);if(level>=2)out+=hen(-3,20)+hen(4,23);
+ if(level>=3)out+=cow(25,5,.8);
+ if(level>=4)out+=`<g class="tractor" transform="translate(5 11)"><path d="M-2-1v-15H9v16" fill="#4c7e55" stroke="#b4bb80"/><path d="M0-13h7v7H0Z" fill="#86b3b0"/><rect x="-9" y="-5" width="30" height="9" rx="3" fill="#7e9b46" stroke="#c3b967"/><path d="M18-4v-9" stroke="#69665a" stroke-width="2"/><rect x="17" y="-3" width="4" height="5" fill="#3f594d"/><circle cx="0" cy="5" r="8" fill="#2b3535" stroke="#999879"/><circle cx="0" cy="5" r="4" fill="#d7ad50"/><circle cx="19" cy="5" r="5" fill="#2b3535"/><circle cx="19" cy="5" r="2" fill="#d7ad50"/></g>`;
+ if(level>=5)out+=`<g><path d="M25-14v-34q9-10 18 0v34" fill="url(#silo)" stroke="#abb3a1"/><ellipse cx="34" cy="-48" rx="9" ry="5" fill="#c2c7b4"/><path d="M25-37h18m-18 10h18m-18 10h18" stroke="#526975"/><path d="M40-48v35" stroke="#e2d8ae"/></g>`;
+ if(level>=6)out+=cow(39,13,.65)+`<path d="M-50-3v-24m0 9 10-9m-10 9-10-8m10 8-6 11m6-11 6 11" stroke="#c4b17d" stroke-width="2"/>`;
+ for(const [x,y] of [[-47,6],[-30,10],[-12,15],[7,20],[25,14],[43,6],[56,0]])out+=`<path d="M${x} ${y+2}v-10" stroke="#c3ab74" stroke-width="3"/>`;
+ out+=`<path d="M-47 0-30 4-12 9 7 14 25 8 43 0 56-6M-47 5-30 9-12 14 7 19 25 13 43 5 56-1" fill="none" stroke="#dcc596" stroke-width="1.6"/>`+tree(-48,-11,.7);
+ return out;
+}
+export function propertyModel(level,style='home'){return `<g class="building detailed-model" aria-hidden="true">${style==='farm'?farm(Math.max(1,level)):level>=6?plaza():home(Math.max(1,level))}</g>`;}
+export function propertyPreview(level,style='home'){const frame=style==='farm'?'-67 -77 134 112':level>=6?'-59 -151 118 184':level<=1?'-53 -79 106 111':`-54 ${-48-level*13} 108 ${80+level*13}`;return `<svg class="property-preview" viewBox="${frame}" role="img" aria-label="${style==='farm'?'Çiftlik':level>=6?'Plaza':level<=1?'Ev':level+' katlı apartman'} yapı önizlemesi">${modelDefs}<ellipse cy="18" rx="73" ry="20" fill="#19352e"/>${propertyModel(level,style)}</svg>`;}
